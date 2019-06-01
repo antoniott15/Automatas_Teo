@@ -16,17 +16,11 @@ int main()
   g.readFile(file);
   g.print();
 
-  auto bfs = g.BFS(10);
+  auto bfs = g.BFS(2);
   cout << "\n**************************\n";
   cout << "             BFS " << endl;
   cout << "**************************\n";
   bfs->print();
-
-  auto dfs = g.DFS(10);
-  cout << "\n**************************\n";
-  cout << "             DFS " << endl;
-  cout << "**************************\n";
-  dfs->print();
 
   return EXIT_SUCCESS;
 }
