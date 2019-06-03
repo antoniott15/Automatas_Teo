@@ -1,26 +1,25 @@
-//#include <GL/glut.h>
 #include <iostream>
-#include "automatas.h"
-#include "read.h"
+#include "automata.h"
 
-using namespace std;
+int main() {
 
-int main()
-{
+    automata test;
 
-  Automata<int, int> g(true, true);
-  string file;
+    test.nuevoEstado(0);
+    test.nuevoEstado(1);
+    test.nuevoEstado(2);
+    test.nuevoEstado(3);
 
-  cout << "Ingresa nombre de file::";
-  cin >> file;
-  g.readFile(file);
-  g.print();
+    test.juntarEstados(0,'a',1);
+    test.juntarEstados(0,'b',1);
+    test.juntarEstados(1,'a',1);
+    test.juntarEstados(1,'b',2);
+    test.juntarEstados(2,'a',2);
+    test.juntarEstados(3,'a',3);
+    test.juntarEstados(2,'b',3);
+    test.juntarEstados(3,'b',0);
 
-  auto bfs = g.BFS(2);
-  cout << "\n**************************\n";
-  cout << "             BFS " << endl;
-  cout << "**************************\n";
-  bfs->print();
+    test.printAutomata();
 
-  return EXIT_SUCCESS;
+    return 0;
 }
