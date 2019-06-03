@@ -24,8 +24,7 @@ int main()
 
   automata *powerTest = test.getPowerAutomata();
 
-  auto BFS = test.BFS(2);
-  BFS->printAutomata();
+  powerTest->BFS(2);
 
   for (estado *_estado : powerTest->getEstados())
   {

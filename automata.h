@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "estado.h"
 #include <queue>
+#include <list>
 
 #ifndef PARCIAL_AUTOMATA_H
 #define PARCIAL_AUTOMATA_H
@@ -59,16 +60,6 @@ public:
             final->nuevaTransicion(inicio, simbolo, final);
         }
     };
-    int *getEstado(int value)
-    {
-        for (int i = 0; i < estados.size(); i++)
-        {
-            if (value == estados[i]->nombreEstado)
-            {
-                return estados[i];
-            }
-        }
-    }
 
     automata *getPowerAutomata()
     {
@@ -101,12 +92,10 @@ public:
         return powerAutomata;
     }
 
-
-    automata *BFS(int value)
+    void BFS(int value)
     {
         auto bfsAutomata = new automata();
         int size = 0;
-        transiciones;
         for (int i = 0; i <= estados.size(); i++)
         {
             bfsAutomata->nuevoEstado(i);
@@ -116,27 +105,28 @@ public:
         for (int i = 0; i < size; i++)
             frequented[i] = false;
 
-        queue<estado *> container;
-        auto currNode = getEstado(value);
-        auto prevNode = currNode;
-        container.push(currNode);
-        if (!container.empty)
+        queue<int> container;
+
+        frequented[value] = true;
+        container.push(value);
+
+        while (!container.empty())
         {
-            prevNode = currNode;
-            currNode = container.front();
+            value = container.front();
+            cout << value << " ";
             container.pop();
-            vector<estado *> listAdjs = currNode->getListaIncluye();
-            for (int i = 0; i < listAdjs.size(); i++)
+
+            for (int i = 0; i < estados.size(); ++i)
             {
                 if (!frequented[i])
                 {
-                    bfsAutomata->;
+                    frequented[i] = true;
+                    container.push(i);
                 }
-
             }
         }
     }
-    
+
     void printAutomata()
     {
         std::cout << std::setw(5) << "Estado\t"
