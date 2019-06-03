@@ -22,7 +22,29 @@ int main()
 
   test.printAutomata();
 
-  automata *powerTest = test.getPowerAutomata();
+
+    std::cout << std::endl<< std::endl<<"POWER TEST"<<std::endl;
+
+    automata* powerTest = test.getPowerAutomata();
+
+    std::cout << std::endl<< std::endl;
+
+    for(estado* _estado: powerTest->getEstados()) {
+        std::cout<<_estado->getNombre()<<" ";
+        for (estado *_estado2: _estado->getListaIncluye()) {
+            std::cout << _estado2->getNombre();
+        }
+        std::cout << std::endl;
+    }
+
+
+    std::cout << std::endl<< std::endl;
+
+    powerTest->printAutomata();
+
+
+    std::cout << std::endl<< std::endl<<"BFS TEST"<<std::endl;
+
   powerTest->BFS(2);
   powerTest->printAutomata();
 
@@ -37,3 +59,4 @@ int main()
 
   return 0;
 }
+

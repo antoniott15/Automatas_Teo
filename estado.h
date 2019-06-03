@@ -1,7 +1,3 @@
-//
-// Created by alejandro on 6/2/19.
-//
-
 #ifndef PARCIAL_ESTADO_H
 #define PARCIAL_ESTADO_H
 
@@ -49,3 +45,4 @@ private:
 };
 
 #endif //PARCIAL_ESTADO_H
+
