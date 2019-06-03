@@ -5,16 +5,15 @@
 #ifndef PARCIAL_TRANSICION_H
 #define PARCIAL_TRANSICION_H
 
-
 class estado;
 
-struct transicion{
-    estado* inicio;
+struct transicion
+{
+    estado *inicio;
     char simbolo;
-    estado* final;
+    estado *final;
 
-    transicion(estado* inicio, char simbolo, estado* final):inicio{inicio},simbolo{simbolo},final{final}{}
-
+    transicion(estado *inicio, char simbolo, estado *final) : inicio{inicio}, simbolo{simbolo}, final{final} {}
 };
 
 #endif //PARCIAL_TRANSICION_H

@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
+#include <algorithm>
 #include "estado.h"
 #include <queue>
 
@@ -14,7 +16,9 @@ using namespace std;
 class automata
 {
 public:
+    typedef estado Estado;
     typedef std::vector<estado *> listaEstados;
+    typedef std::vector<transicion *> listaTransiciones;
 
     automata() = default;
 
@@ -55,7 +59,7 @@ public:
             final->nuevaTransicion(inicio, simbolo, final);
         }
     };
-    estado *getEstado(int value)
+    int *getEstado(int value)
     {
         for (int i = 0; i < estados.size(); i++)
         {
@@ -66,10 +70,43 @@ public:
         }
     }
 
+    automata *getPowerAutomata()
+    {
+        auto powerAutomata = new automata();
+        unsigned int powerSize = pow(estados.size(), 2);
+        listaEstados incluye;
+        for (estado *_estado : estados)
+        {
+            powerAutomata->estados.push_back(_estado);
+        }
+
+        for (unsigned int counter = 0; counter < powerSize; counter++)
+        {
+            for (unsigned int i = 0; i < estados.size(); i++)
+            {
+                if (counter & (1 << i))
+                {
+                    incluye.push_back(estados[i]);
+                }
+            }
+            if (incluye.size() < 2)
+            {
+                incluye.clear();
+                continue;
+            }
+            powerAutomata->nuevoEstado(counter + estados.size());
+            std::copy(incluye.begin(), incluye.end(), std::back_inserter(powerAutomata->estados.back()->incluye));
+            incluye.clear();
+        }
+        return powerAutomata;
+    }
+
+
     automata *BFS(int value)
     {
         auto bfsAutomata = new automata();
         int size = 0;
+        transiciones;
         for (int i = 0; i <= estados.size(); i++)
         {
             bfsAutomata->nuevoEstado(i);
@@ -89,26 +126,23 @@ public:
             currNode = container.front();
             container.pop();
             vector<estado *> listAdjs = currNode->getListaIncluye();
-            for (auto i = listAdjs.begin(); i != listAdjs.end(); ++i)
+            for (int i = 0; i < listAdjs.size(); i++)
             {
-
-                if (!frequented[(*i)->getListaIncluye() - 1])
+                if (!frequented[i])
                 {
-                    bfsAutomata->juntarEstados(*prevNode, ,*currNode);
-                    container.push(*i);
-                    frequented[(*i)->getData() - 1] = true;
+                    bfsAutomata->;
                 }
+
             }
         }
     }
-
+    
     void printAutomata()
     {
         std::cout << std::setw(5) << "Estado\t"
                   << "|" << std::setw(5) << "\tTransicion" << std::endl
                   << std::setw(5) << "\t"
                   << "|\t" << std::setw(5) << "a" << std::setw(5) << "b" << std::endl;
-
         for (estado *_estado : estados)
         {
             std::cout << std::setw(5) << _estado->nombreEstado << "\t|\t";
@@ -129,15 +163,19 @@ public:
         }
     }
 
-    automata *getPowerAutomata()
+    listaEstados getEstados()
     {
-        auto powerAutomata = new automata();
+        return estados;
+    }
 
-        return powerAutomata;
-    };
+    listaTransiciones getListaTransiciones()
+    {
+        return transiciones;
+    }
 
 private:
     listaEstados estados;
+    listaTransiciones transiciones;
 };
 
 #endif //PARCIAL_AUTOMATA_H

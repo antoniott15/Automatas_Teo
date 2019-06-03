@@ -38,6 +38,11 @@ public:
         return incluye;
     }
 
+    int getNombre()
+    {
+        return nombreEstado;
+    }
+
 private:
     listaTransiciones transiciones;
     listaEstados incluye;
