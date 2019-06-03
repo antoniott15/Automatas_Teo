@@ -21,5 +21,14 @@ int main() {
 
     test.printAutomata();
 
+    automata* powerTest = test.getPowerAutomata();
+
+    for(estado* _estado: powerTest->getEstados()) {
+        for (estado *_estado2: _estado->getListaIncluye()) {
+            std::cout << _estado2->getNombre();
+        }
+        std::cout << std::endl;
+    }
+
     return 0;
 }

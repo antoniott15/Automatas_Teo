@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
+#include <algorithm>
 #include "estado.h"
 
 #ifndef PARCIAL_AUTOMATA_H
@@ -72,6 +74,26 @@ public:
 
     automata* getPowerAutomata(){
         auto powerAutomata= new automata();
+        unsigned int powerSize = pow(estados.size(),2);
+        listaEstados incluye;
+        for(estado* _estado: estados) {
+            powerAutomata->estados.push_back(_estado);
+        }
+
+        for(unsigned int counter = 0; counter < powerSize; counter++){
+            for (unsigned int i = 0;i<estados.size();i++){
+                if(counter & (1<<i)){
+                    incluye.push_back(estados[i]);
+                }
+            }
+            if(incluye.size()<2){
+                incluye.clear();
+                continue;
+            }
+            powerAutomata->nuevoEstado(counter+estados.size());
+            std::copy(incluye.begin(), incluye.end(), std::back_inserter(powerAutomata->estados.back()->incluye));
+            incluye.clear();
+        }
 
 
 
@@ -80,6 +102,10 @@ public:
         return powerAutomata;
     };
 
+
+    listaEstados getEstados(){
+        return estados;
+    }
 
 private:
     listaEstados estados;
