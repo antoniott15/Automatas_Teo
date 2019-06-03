@@ -23,8 +23,8 @@ int main()
   test.printAutomata();
 
   automata *powerTest = test.getPowerAutomata();
-
   powerTest->BFS(2);
+  powerTest->printAutomata();
 
   for (estado *_estado : powerTest->getEstados())
   {

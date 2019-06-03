@@ -61,6 +61,40 @@ public:
         }
     };
 
+    void juntarEstados(estado *nombreInicial, char simbolo, estado *nombreFinal)
+    {
+
+        estado *inicio = nullptr;
+        estado *final = nullptr;
+
+        /* for (estado *_estado : estados)
+        {
+            if (_estado->nombreEstado == nombreInicial)
+            {
+                inicio = _estado;
+            }
+            if (_estado->nombreEstado == nombreFinal)
+            {
+                final = _estado;
+            }
+        }*/
+
+        if (!inicio || !final)
+        {
+            std::cout << "Error de estados" << std::endl;
+            return;
+        }
+        if (inicio == final)
+        {
+            inicio->nuevaTransicion(inicio, simbolo, final);
+        }
+        else
+        {
+            inicio->nuevaTransicion(inicio, simbolo, final);
+            final->nuevaTransicion(inicio, simbolo, final);
+        }
+    };
+
     automata *getPowerAutomata()
     {
         auto powerAutomata = new automata();
@@ -92,7 +126,17 @@ public:
         return powerAutomata;
     }
 
-    void BFS(int value)
+    estado *getValue(int value)
+    {
+        for (int i = 0; estados.size(); i++)
+        {
+            if (value == estados[i]->nombreEstado)
+            {
+                return estados[i];
+            }
+        }
+    }
+    automata *BFS(int value)
     {
         auto bfsAutomata = new automata();
         int size = 0;
@@ -105,26 +149,32 @@ public:
         for (int i = 0; i < size; i++)
             frequented[i] = false;
 
-        queue<int> container;
+        queue<estado *> container;
 
-        frequented[value] = true;
-        container.push(value);
+        auto currNode = getValue(value);
+        container.push(currNode);
 
+        int i = 0;
         while (!container.empty())
         {
-            value = container.front();
-            cout << value << " ";
+            currNode = container.front();
             container.pop();
-
-            for (int i = 0; i < estados.size(); ++i)
+            estado *_estado;
+            for (transicion *_transicion : _estado->getListaTransiciones())
             {
+                i++;
                 if (!frequented[i])
                 {
-                    frequented[i] = true;
-                    container.push(i);
+                    if (_transicion->inicio == _estado && _transicion->inicio != _transicion->final)
+                    {
+                        bfsAutomata->juntarEstados(_transicion->inicio->nombreEstado, i % 2 == 0 ? 'a' : 'b', _transicion->final->nombreEstado);
+                        container.push(_transicion->inicio);
+                        frequented[i] = true;
+                    }
                 }
             }
         }
+        return bfsAutomata;
     }
 
     void printAutomata()
