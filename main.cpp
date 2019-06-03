@@ -20,6 +20,6 @@ int main() {
     test.juntarEstados(3,'b',0);
 
     test.printAutomata();
-
+    
     return 0;
 }
