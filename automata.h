@@ -51,120 +51,104 @@ public:
         {
             inicio->nuevaTransicion(inicio, simbolo, final);
         }
-
-    };
-
-    void juntarEstados(estado *nombreInicial, char simbolo, estado *nombreFinal)
-    {
-
-        estado *inicio = nullptr;
-        estado *final = nullptr;
-
-        /* for (estado *_estado : estados)
-        {
-            if (_estado->nombreEstado == nombreInicial)
-            {
-                inicio = _estado;
-            }
-            if (_estado->nombreEstado == nombreFinal)
-            {
-                final = _estado;
-            }
-        }*/
-
-        if (!inicio || !final)
-        {
-            std::cout << "Error de estados" << std::endl;
-            return;
-        }
-        if (inicio == final)
-        {
-            inicio->nuevaTransicion(inicio, simbolo, final);
-        }
-        else
-        {
-            inicio->nuevaTransicion(inicio, simbolo, final);
-            final->nuevaTransicion(inicio, simbolo, final);
-        }
     };
 
     automata *getPowerAutomata()
     {
-  auto powerAutomata= new automata();
-        unsigned int powerSize = pow(estados.size(),2);
+        auto powerAutomata = new automata();
+        unsigned int powerSize = pow(estados.size(), 2);
         listaEstados incluye;
 
-        for(estado* _estado: estados) {
+        for (estado *_estado : estados)
+        {
             powerAutomata->estados.push_back(_estado);
             powerAutomata->getEstados().back()->incluye.push_back(_estado);
         }
 
-        for(unsigned int counter = 0; counter < powerSize; counter++){
-            for (unsigned int i = 0;i<estados.size();i++){
-                if(counter & (1<<i)){
+        for (unsigned int counter = 0; counter < powerSize; counter++)
+        {
+            for (unsigned int i = 0; i < estados.size(); i++)
+            {
+                if (counter & (1 << i))
+                {
                     incluye.push_back(estados[i]);
                 }
             }
-            if(incluye.size()<2){
+            if (incluye.size() < 2)
+            {
                 incluye.clear();
                 continue;
             }
-            powerAutomata->nuevoEstado(counter+estados.size());
+            powerAutomata->nuevoEstado(counter + estados.size());
             std::copy(incluye.begin(), incluye.end(), std::back_inserter(powerAutomata->estados.back()->incluye));
             incluye.clear();
         }
-
 
         listaEstados apunta;
         bool match;
         int matches;
 
-        for(estado* _estado: powerAutomata->estados) { //_estado itera sobre todos los estados del power set
-            if (_estado->incluye.size() < 2) {//Se revisa que no sea un singleton
+        for (estado *_estado : powerAutomata->estados)
+        { //_estado itera sobre todos los estados del power set
+            if (_estado->incluye.size() < 2)
+            { //Se revisa que no sea un singleton
                 continue;
             }
 
-            for (char letra : lenguajeAutomata) {//transicion para cada letra
+            for (char letra : lenguajeAutomata)
+            { //transicion para cada letra
 
-                for (estado *_incluye: _estado->incluye) {//por cara incluye dentro del estado
+                for (estado *_incluye : _estado->incluye)
+                { //por cara incluye dentro del estado
 
-                    for (transicion *_transicion: _incluye->transiciones) {//por cada transicion dentro de los incluye
+                    for (transicion *_transicion : _incluye->transiciones)
+                    { //por cada transicion dentro de los incluye
 
-                        if (_transicion->simbolo == letra && std::find(apunta.begin(), apunta.end(), _transicion->final) == apunta.end()) {
+                        if (_transicion->simbolo == letra && std::find(apunta.begin(), apunta.end(), _transicion->final) == apunta.end())
+                        {
 
-                            apunta.push_back(_transicion->final);//Todos los estados a los que apunta el _estado actual con la letra actual se meten a apunta
+                            apunta.push_back(_transicion->final); //Todos los estados a los que apunta el _estado actual con la letra actual se meten a apunta
                         }
                     }
                 }
 
-
-                for (estado *_estadoFinal: powerAutomata->estados) {//se compara los nombres de la lista de estados apunta con los nombres de los incluye de todos los estados
+                for (estado *_estadoFinal : powerAutomata->estados)
+                { //se compara los nombres de la lista de estados apunta con los nombres de los incluye de todos los estados
                     match = true;
                     matches = 0;
-                    if(apunta.size()==_estadoFinal->incluye.size()) {//Calcular numero de matches
+                    if (apunta.size() == _estadoFinal->incluye.size())
+                    { //Calcular numero de matches
 
-                        for(estado* estadoApunta : apunta){
-                            for(estado* finalIncluye:_estadoFinal->incluye){
-                                if(estadoApunta->getNombre()==finalIncluye->getNombre()){
+                        for (estado *estadoApunta : apunta)
+                        {
+                            for (estado *finalIncluye : _estadoFinal->incluye)
+                            {
+                                if (estadoApunta->getNombre() == finalIncluye->getNombre())
+                                {
                                     matches++;
                                     break;
                                 }
                             }
                         }
-                        if(matches!=_estadoFinal->incluye.size()){match=false;}
+                        if (matches != _estadoFinal->incluye.size())
+                        {
+                            match = false;
+                        }
                     }
-                    else{continue;}
+                    else
+                    {
+                        continue;
+                    }
 
-                    if(match){
-                        _estado->nuevaTransicion(_estado,letra,_estadoFinal);
+                    if (match)
+                    {
+                        _estado->nuevaTransicion(_estado, letra, _estadoFinal);
                         break;
                     }
-
                 }
 
                 apunta.clear();
             }
-
         }
 
         return powerAutomata;
@@ -179,14 +163,15 @@ public:
                 return estados[i];
             }
         }
+        return nullptr;
     }
-    automata *BFS(int value)
+    void BFS(int value)
     {
         auto bfsAutomata = new automata();
         int size = 0;
-        for (int i = 0; i <= estados.size(); i++)
+        for (auto i = estados.begin(); i < estados.end(); i++)
         {
-            bfsAutomata->nuevoEstado(i);
+            bfsAutomata->nuevoEstado((*i)->getNombre());
             size++;
         }
         bool *frequented = new bool[size];
@@ -198,27 +183,26 @@ public:
         auto currNode = getValue(value);
         container.push(currNode);
 
-        int i = 0;
         while (!container.empty())
         {
             currNode = container.front();
             container.pop();
-            estado *_estado;
-            for (transicion *_transicion : _estado->getListaTransiciones())
+            for (auto i = estados.begin(); i != estados.end(); i++)
             {
-                i++;
-                if (!frequented[i])
+                if (!frequented[currNode->getNombre() - 1])
                 {
-                    if (_transicion->inicio == _estado && _transicion->inicio != _transicion->final)
+                    for (transicion *_transicion : currNode->getListaTransiciones())
                     {
-                        bfsAutomata->juntarEstados(_transicion->inicio->nombreEstado, i % 2 == 0 ? 'a' : 'b', _transicion->final->nombreEstado);
-                        container.push(_transicion->inicio);
-                        frequented[i] = true;
+                        cout << _transicion->final->nombreEstado << '\t';
+                        container.push(_transicion->getFinal());
+                        frequented[currNode->getNombre() - 1] = true;
                     }
+                    frequented[currNode->getNombre() - 1] = true;
+                    cout << endl;
                 }
             }
         }
-        return bfsAutomata;
+        // return bfsAutomata;
     }
 
     void printAutomata()
@@ -233,8 +217,7 @@ public:
 
             for (transicion *_transicion : _estado->getListaTransiciones())
             {
-                    std::cout << std::setw(5) << _transicion->final->nombreEstado << ' ';
-
+                std::cout << std::setw(5) << _transicion->final->nombreEstado << ' ';
             }
             std::cout << std::endl;
         }
@@ -253,8 +236,7 @@ public:
 private:
     listaEstados estados;
     listaTransiciones transiciones;
-    lenguaje lenguajeAutomata = {'a','b'};
+    lenguaje lenguajeAutomata = {'a', 'b'};
 };
 
 #endif //PARCIAL_AUTOMATA_H
-

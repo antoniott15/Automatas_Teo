@@ -45,4 +45,3 @@ private:
 };
 
 #endif //PARCIAL_ESTADO_H
-
