@@ -6,6 +6,8 @@
 #include "estado.h"
 #include <queue>
 #include <list>
+#include <map>
+#include <string>
 
 #ifndef PARCIAL_AUTOMATA_H
 #define PARCIAL_AUTOMATA_H
@@ -165,59 +167,96 @@ public:
         }
         return nullptr;
     }
-    void BFS(int value)
+    automata *BFS(int value)
     {
+        auto powerAutomata = getPowerAutomata();
         auto bfsAutomata = new automata();
-        int size = 0;
-        for (auto i = estados.begin(); i < estados.end(); i++)
+        int size = powerAutomata->estados.size();
+
+        map<int, bool> frequented;
+        for (auto i = powerAutomata->estados.begin(); i != powerAutomata->estados.end(); i++)
         {
-            bfsAutomata->nuevoEstado((*i)->getNombre());
-            size++;
+            frequented.insert(pair<int, bool>((*i)->getNombre(), false));
         }
-        bool *frequented = new bool[size];
-        for (int i = 0; i < size; i++)
-            frequented[i] = false;
 
         queue<estado *> container;
-
-        auto currNode = getValue(value);
+        auto currNode = powerAutomata->getValue(value);
         container.push(currNode);
 
         while (!container.empty())
         {
             currNode = container.front();
             container.pop();
-            for (auto i = estados.begin(); i != estados.end(); i++)
-            {
-                if (!frequented[currNode->getNombre() - 1])
+            if (!frequented[currNode->getNombre()])
+            { 
+                   bool exist1 = false;
+                        for(estado* _estadocheck:bfsAutomata->estados){
+                            if(_estadocheck->getNombre()==currNode->getNombre())
+                                exist1 = true;
+                        }
+                        if(!exist1){
+                            bfsAutomata->nuevoEstado(currNode->getNombre()); 
+                        }
+               
+                frequented[currNode->getNombre()] = true;  
+                for (transicion *_transicion : currNode->transiciones)
                 {
-                    for (transicion *_transicion : currNode->getListaTransiciones())
+                    if (!frequented[_transicion->final->getNombre()])
                     {
-                        cout << _transicion->final->nombreEstado << '\t';
-                        container.push(_transicion->getFinal());
-                        frequented[currNode->getNombre() - 1] = true;
+
+                        container.push(_transicion->final);
+                        bool exist = false;
+                        for(estado* _estadocheck:bfsAutomata->estados){
+                            if(_estadocheck->getNombre()==_transicion->final->getNombre())
+                                exist = true;
+                        }
+                        if(!exist){
+                             bfsAutomata->nuevoEstado(_transicion->final->getNombre());
+                             bfsAutomata->juntarEstados(currNode->getNombre(),_transicion->simbolo,_transicion->final->getNombre());
+                        }
                     }
-                    frequented[currNode->getNombre() - 1] = true;
-                    cout << endl;
                 }
             }
         }
-        // return bfsAutomata;
+        
+        return bfsAutomata;
     }
+
+string reset(int value)
+{
+    auto _estado = getValue(value);
+    string temp = "";
+    if(_estado->transiciones.size()==0)
+    {
+        if(_estado->incluye.size()==1)
+        {
+            return temp;
+        }
+        else{
+            return "";
+        }
+    }
+    else{
+        for(transicion *_transicion: transiciones){
+            
+            //return s(1,_transicion->simbolo) +reset(_transicion->final->getNombre());
+        }
+    }
+    return temp;
+}
+
 
     void printAutomata()
     {
         std::cout << std::setw(5) << "Estado\t"
-                  << "|" << std::setw(5) << "\tTransicion" << std::endl
-                  << std::setw(5) << "\t"
-                  << "|\t" << std::setw(5) << "a" << std::setw(5) << "b" << std::endl;
+                  << "|" << std::setw(5) << "\tTransicion" << std::endl;
         for (estado *_estado : estados)
         {
             std::cout << std::setw(5) << _estado->nombreEstado << "\t|\t";
 
             for (transicion *_transicion : _estado->getListaTransiciones())
             {
-                std::cout << std::setw(5) << _transicion->final->nombreEstado << ' ';
+                std::cout << std::setw(5) <<_transicion->simbolo<< _transicion->final->nombreEstado << ' ';
             }
             std::cout << std::endl;
         }

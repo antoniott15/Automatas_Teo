@@ -51,7 +51,11 @@ int main()
        << "\n"
        << endl;
 
-  powerTest->BFS(10);
+  auto bfs = powerTest->BFS(19);
+  bfs->printAutomata();
+
+  cout << bfs->reset(19)<<endl;
+
 
   /*  for (estado *_estado : powerTest->getEstados())
   {
