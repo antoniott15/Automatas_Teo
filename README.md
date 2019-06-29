@@ -1,4 +1,4 @@
-# ResetSecuences
+# Syncronized word
 
 In general terms an automaton is a mathematical model that given an input
 obtains an exit thanks to the language-dependent transition functions.
