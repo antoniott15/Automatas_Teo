@@ -246,7 +246,7 @@ public:
 
         for (auto ai = powerAutomata->estados.begin(); ai != powerAutomata->estados.end(); ai++)
         {
-            cout << (*ai)->getNombre() << "  " << (*ai)->incluye.size() << endl;
+            cout << (*ai)->transiciones.incluye.size() << "  " << (*ai)->incluye.size() << endl;
         }
 
         for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
@@ -254,7 +254,7 @@ public:
             for (transicion *_transicion : (*i)->getListaTransiciones())
             {
                 // it = find(myvector.begin(), myvector.end(), 30);
-                cout << (*i)->incluye.size() << endl;
+                cout << (*i)->transiciones << endl;
 
                 syncroWord = syncroWord + _transicion->simbolo;
             }
