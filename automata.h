@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <fstream>
 #include <algorithm>
 #include "estado.h"
 #include <queue>
@@ -169,7 +170,15 @@ public:
     }
     automata *BFS(int value)
     {
-        auto powerAutomata = getPowerAutomata();
+        estado* root;
+        automata* powerAutomata = getPowerAutomata();
+        for (auto i = powerAutomata->estados.begin(); i != powerAutomata->estados.end(); i++)
+        {
+            if((*i)->incluye.size()==value){
+                root = (*i);
+            }
+        }
+
         auto bfsAutomata = new automata();
         int size = powerAutomata->estados.size();
 
@@ -180,7 +189,7 @@ public:
         }
 
         queue<estado *> container;
-        auto currNode = powerAutomata->getValue(value);
+        auto currNode = getValue(value);
         container.push(currNode);
 
         while (!container.empty())
@@ -218,31 +227,23 @@ public:
                 }
             }
         }
-        
-        return bfsAutomata;
+        reset(bfsAutomata);
+         return bfsAutomata;
     }
 
-string reset(int value)
+string reset(automata* bfs)
 {
-    auto _estado = getValue(value);
-    string temp = "";
-    if(_estado->transiciones.size()==0)
-    {
-        if(_estado->incluye.size()==1)
+    vector<estado *> estadosOn = bfs->getEstados();
+    string syncroWord;
+    for (auto i = estadosOn.begin(); i != estadosOn.end(); i++){
+        for(transicion *_transicion: (*i)->getListaTransiciones())
         {
-            return temp;
-        }
-        else{
-            return "";
+            syncroWord =  _transicion->simbolo + syncroWord;
         }
     }
-    else{
-        for(transicion *_transicion: transiciones){
-            
-            //return s(1,_transicion->simbolo) +reset(_transicion->final->getNombre());
-        }
-    }
-    return temp;
+    cout << "entro <" << endl;
+    cout << syncroWord << endl;
+    return syncroWord;
 }
 
 
@@ -259,6 +260,33 @@ string reset(int value)
                 std::cout << std::setw(5) <<_transicion->simbolo<< _transicion->final->nombreEstado << ' ';
             }
             std::cout << std::endl;
+        }
+    }
+
+    void writeOn(string nameOf,int numberOfElements){
+        ofstream File;
+        int width = 1200;
+        int heigh = 1200;
+        int i = 50;
+        int j = 100;
+        File.open(nameOf);
+        File << numberOfElements << endl;
+        for (estado *_estado : estados)
+        {   
+            i = i + 100 + (width/numberOfElements);
+            if(i > width){
+                i = 50;
+                j = j + 75 + (heigh / numberOfElements);
+            }
+            File << _estado->nombreEstado<<" "<< i << " "<< j <<endl;
+        }
+        File << endl;
+        for (estado *_estado : estados)
+        {
+            for (transicion *_transicion : _estado->getListaTransiciones())
+            {
+                File << _estado->nombreEstado << " " << _transicion->final->nombreEstado << " " << _transicion->simbolo << "\n";
+            }
         }
     }
 

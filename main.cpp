@@ -1,10 +1,38 @@
 #include <iostream>
 #include "automata.h"
+#include <stdlib.h> /* srand, rand */
+#include <time.h>
 
 int main()
 {
-
+  int cantNodos;
+  srand(time(NULL));
   automata test;
+/*
+  cout << "Ingrese la cantidad de nodos, con 0 se generaran la cantidad de nodos aleatoriamente: " <<endl;
+  cin >> cantNodos;
+
+  if(cantNodos == 0){
+    cantNodos = rand() % 100+1;
+
+  }
+
+  for (int i = 1; i <= cantNodos; i++)
+  {
+    test.nuevoEstado(i);
+  }
+
+    for (int i = 1; i <= cantNodos; i++)
+    {
+      int newNumber = rand() % cantNodos + 1;
+      test.juntarEstados(i, 'a', newNumber);
+    }
+    for (int i = 1; i <= cantNodos; i++)
+    {
+      int newNumber = rand() % cantNodos + 1;
+      test.juntarEstados(i, 'b', newNumber);
+    }
+*/
 
   test.nuevoEstado(0);
   test.nuevoEstado(1);
@@ -21,6 +49,8 @@ int main()
   test.juntarEstados(3, 'b', 0);
 
   test.printAutomata();
+
+  test.writeOn("input.txt", cantNodos);
 
   std::cout << std::endl
             << std::endl
@@ -52,12 +82,12 @@ int main()
        << endl;
 
   auto bfs = powerTest->BFS(19);
-  bfs->printAutomata();
+//  bfs->printAutomata();
 
-  cout << bfs->reset(19)<<endl;
+ /*  cout << bfs->reset(19)<<endl;
 
 
-  /*  for (estado *_estado : powerTest->getEstados())
+  for (estado *_estado : powerTest->getEstados())
   {
     for (estado *_estado2 : _estado->getListaIncluye())
     {
