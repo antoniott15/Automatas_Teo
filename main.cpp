@@ -50,7 +50,7 @@ int main()
 
   test.printAutomata();
 
-  test.writeOn("input.txt", cantNodos);
+  test.writeOn("input.txt", 4);
 
   std::cout << std::endl
             << std::endl
@@ -82,7 +82,7 @@ int main()
        << endl;
 
   auto bfs = powerTest->BFS(19);
-//  bfs->printAutomata();
+  bfs->printAutomata();
 
  /*  cout << bfs->reset(19)<<endl;
 

@@ -170,15 +170,16 @@ public:
     }
     automata *BFS(int value)
     {
-        estado* root;
-        automata* powerAutomata = getPowerAutomata();
-        for (auto i = powerAutomata->estados.begin(); i != powerAutomata->estados.end(); i++)
+        estado *root;
+        automata *powerAutomata = getPowerAutomata();
+        /*       for (auto i = powerAutomata->estados.begin(); i != powerAutomata->estados.end(); i++)
         {
-            if((*i)->incluye.size()==value){
-                root = (*i);
-            }
-        }
 
+            cout << "incluye" << endl;
+            cout << (*i)->incluye.size() << endl;
+            root = (*i);
+        }
+*/
         auto bfsAutomata = new automata();
         int size = powerAutomata->estados.size();
 
@@ -197,17 +198,19 @@ public:
             currNode = container.front();
             container.pop();
             if (!frequented[currNode->getNombre()])
-            { 
-                   bool exist1 = false;
-                        for(estado* _estadocheck:bfsAutomata->estados){
-                            if(_estadocheck->getNombre()==currNode->getNombre())
-                                exist1 = true;
-                        }
-                        if(!exist1){
-                            bfsAutomata->nuevoEstado(currNode->getNombre()); 
-                        }
-               
-                frequented[currNode->getNombre()] = true;  
+            {
+                bool exist1 = false;
+                for (estado *_estadocheck : bfsAutomata->estados)
+                {
+                    if (_estadocheck->getNombre() == currNode->getNombre())
+                        exist1 = true;
+                }
+                if (!exist1)
+                {
+                    bfsAutomata->nuevoEstado(currNode->getNombre());
+                }
+
+                frequented[currNode->getNombre()] = true;
                 for (transicion *_transicion : currNode->transiciones)
                 {
                     if (!frequented[_transicion->final->getNombre()])
@@ -215,37 +218,51 @@ public:
 
                         container.push(_transicion->final);
                         bool exist = false;
-                        for(estado* _estadocheck:bfsAutomata->estados){
-                            if(_estadocheck->getNombre()==_transicion->final->getNombre())
+                        for (estado *_estadocheck : bfsAutomata->estados)
+                        {
+                            if (_estadocheck->getNombre() == _transicion->final->getNombre())
                                 exist = true;
                         }
-                        if(!exist){
-                             bfsAutomata->nuevoEstado(_transicion->final->getNombre());
-                             bfsAutomata->juntarEstados(currNode->getNombre(),_transicion->simbolo,_transicion->final->getNombre());
+                        if (!exist)
+                        {
+                            bfsAutomata->nuevoEstado(_transicion->final->getNombre());
+                            bfsAutomata->juntarEstados(currNode->getNombre(), _transicion->simbolo, _transicion->final->getNombre());
                         }
                     }
                 }
             }
         }
         reset(bfsAutomata);
-         return bfsAutomata;
+        return bfsAutomata;
     }
 
-string reset(automata* bfs)
-{
-    vector<estado *> estadosOn = bfs->getEstados();
-    string syncroWord;
-    for (auto i = estadosOn.begin(); i != estadosOn.end(); i++){
-        for(transicion *_transicion: (*i)->getListaTransiciones())
+    string reset(automata *bfs)
+    {
+        vector<estado *> estadosOn = bfs->getEstados();
+        vector<estado *>::iterator it;
+        string syncroWord;
+        automata *powerAutomata = getPowerAutomata();
+        vector<int> listIncluye;
+
+        for (auto ai = powerAutomata->estados.begin(); ai != powerAutomata->estados.end(); ai++)
         {
-            syncroWord =  _transicion->simbolo + syncroWord;
+            cout << (*ai)->getNombre() << "  " << (*ai)->incluye.size() << endl;
         }
-    }
-    cout << "entro <" << endl;
-    cout << syncroWord << endl;
-    return syncroWord;
-}
 
+        for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
+        {
+            for (transicion *_transicion : (*i)->getListaTransiciones())
+            {
+                // it = find(myvector.begin(), myvector.end(), 30);
+                cout << (*i)->incluye.size() << endl;
+
+                syncroWord = syncroWord + _transicion->simbolo;
+            }
+        }
+        cout << "Sync word" << endl;
+        cout << syncroWord << endl;
+        return syncroWord;
+    }
 
     void printAutomata()
     {
@@ -257,13 +274,14 @@ string reset(automata* bfs)
 
             for (transicion *_transicion : _estado->getListaTransiciones())
             {
-                std::cout << std::setw(5) <<_transicion->simbolo<< _transicion->final->nombreEstado << ' ';
+                std::cout << std::setw(5) << _transicion->simbolo << _transicion->final->nombreEstado << ' ';
             }
             std::cout << std::endl;
         }
     }
 
-    void writeOn(string nameOf,int numberOfElements){
+    void writeOn(string nameOf, int numberOfElements)
+    {
         ofstream File;
         int width = 1200;
         int heigh = 1200;
@@ -272,13 +290,14 @@ string reset(automata* bfs)
         File.open(nameOf);
         File << numberOfElements << endl;
         for (estado *_estado : estados)
-        {   
-            i = i + 100 + (width/numberOfElements);
-            if(i > width){
+        {
+            i = i + 100 + (width / numberOfElements);
+            if (i > width)
+            {
                 i = 50;
                 j = j + 75 + (heigh / numberOfElements);
             }
-            File << _estado->nombreEstado<<" "<< i << " "<< j <<endl;
+            File << _estado->nombreEstado << " " << i << " " << j << endl;
         }
         File << endl;
         for (estado *_estado : estados)
