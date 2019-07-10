@@ -22,6 +22,12 @@ int main()
 
   test.printAutomata();
 
+  auto testPoly = test;
+
+  testPoly.printAutomata();
+
+
+
   std::cout << std::endl
             << std::endl
             << "POWER TEST" << std::endl;
@@ -44,9 +50,14 @@ int main()
   std::cout << std::endl
             << std::endl;
 
+
+
   powerTest->printAutomata();
 
-  cout << "\n\n\n"
+
+
+
+    cout << "\n\n\n"
        << "\tBFS TEST"
        << "\n"
        << endl;
@@ -66,5 +77,9 @@ int main()
     std::cout << std::endl;
   }
 */
+
+
+    std::cout<<powerTest->polinomial()<<std::endl;
+
   return 0;
 }
