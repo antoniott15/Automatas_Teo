@@ -240,6 +240,7 @@ public:
     {
         vector<estado *> estadosOn = bfs->getEstados();
         string syncroWord;
+
         for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
         {
             for (transicion *_transicion : (*i)->getListaTransiciones())
