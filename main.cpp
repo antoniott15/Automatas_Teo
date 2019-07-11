@@ -50,15 +50,11 @@ int main()
 
   test.printAutomata();
 
-<<<<<<< HEAD
-  test.writeOn("input.txt", 4);
-=======
   auto testPoly = test;
 
   testPoly.printAutomata();
 
 
->>>>>>> polinomial
 
   std::cout << std::endl
             << std::endl

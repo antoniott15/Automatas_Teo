@@ -239,8 +239,24 @@ public:
     string reset(automata *bfs)
     {
         vector<estado *> estadosOn = bfs->getEstados();
+        vector<estado *>::iterator it;
         string syncroWord;
+        automata *powerAutomata = getPowerAutomata();
+        vector<int> listIncluye;
 
+        for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
+        {
+            for (transicion *_transicion : (*i)->getListaTransiciones())
+            {
+
+                    syncroWord = syncroWord + _transicion->simbolo;
+
+            }
+        }
+        cout << "Sync word" << endl;
+        cout << syncroWord << endl;
+        return syncroWord;
+    }
 
 bool polinomial() {//================================================================================================================
 
