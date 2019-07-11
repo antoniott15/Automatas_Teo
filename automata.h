@@ -218,7 +218,7 @@ public:
                 }
             }
         }
-        
+
         return bfsAutomata;
     }
 
