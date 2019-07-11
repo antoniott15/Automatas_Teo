@@ -244,9 +244,9 @@ public:
         {
             for (transicion *_transicion : (*i)->getListaTransiciones())
             {
+
                 if ((*i)->transiciones.size() > 1)
                 {
-
                     syncroWord = syncroWord + "";
                 }
                 else
