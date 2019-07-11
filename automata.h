@@ -232,7 +232,11 @@ public:
                 }
             }
         }
+<<<<<<< HEAD
         reset(bfsAutomata);
+=======
+
+>>>>>>> polinomial
         return bfsAutomata;
     }
 
@@ -242,6 +246,7 @@ public:
         string syncroWord;
 
 
+<<<<<<< HEAD
             for (auto *_estado: estados)
             {
                 cout << _estado->getNombre() << " " << _estado->incluye.size() << endl;
@@ -258,6 +263,26 @@ public:
             cout << syncroWord << endl;
             return syncroWord;
     }
+=======
+bool polinomial() {//================================================================================================================
+
+    for(auto *_estado: estados){
+        if(_estado->incluye.size()==3){
+            for(auto _transicion : _estado->transiciones){
+                if(_transicion->final->incluye.size()==2){
+                    std::cout<<_transicion->inicio->getNombre()<<" > "<<_transicion->simbolo<<" > "<<_transicion->final->getNombre()<<std::endl;
+
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+
+
+}//end polinomial
+
+>>>>>>> polinomial
 
     void printAutomata()
     {

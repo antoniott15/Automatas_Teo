@@ -50,7 +50,15 @@ int main()
 
   test.printAutomata();
 
+<<<<<<< HEAD
   test.writeOn("input.txt", 4);
+=======
+  auto testPoly = test;
+
+  testPoly.printAutomata();
+
+
+>>>>>>> polinomial
 
   std::cout << std::endl
             << std::endl
@@ -74,9 +82,14 @@ int main()
   std::cout << std::endl
             << std::endl;
 
+
+
   powerTest->printAutomata();
 
-  cout << "\n\n\n"
+
+
+
+    cout << "\n\n\n"
        << "\tBFS TEST"
        << "\n"
        << endl;
@@ -96,5 +109,9 @@ int main()
     std::cout << std::endl;
   }
 */
+
+
+    std::cout<<powerTest->polinomial()<<std::endl;
+
   return 0;
 }
