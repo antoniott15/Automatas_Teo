@@ -239,17 +239,14 @@ public:
     string reset(automata *bfs)
     {
         vector<estado *> estadosOn = bfs->getEstados();
-        vector<estado *>::iterator it;
         string syncroWord;
-
-        vector<int> listIncluye;
-
         for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
         {
             for (transicion *_transicion : (*i)->getListaTransiciones())
             {
                 if ((*i)->transiciones.size() > 1)
                 {
+
                     syncroWord = syncroWord + "";
                 }
                 else
