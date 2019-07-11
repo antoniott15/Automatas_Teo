@@ -241,22 +241,21 @@ public:
         vector<estado *> estadosOn = bfs->getEstados();
         vector<estado *>::iterator it;
         string syncroWord;
-        automata *powerAutomata = getPowerAutomata();
-        vector<int> listIncluye;
 
-        for (auto ai = powerAutomata->estados.begin(); ai != powerAutomata->estados.end(); ai++)
-        {
-            cout << (*ai)->transiciones.incluye.size() << "  " << (*ai)->incluye.size() << endl;
-        }
+        vector<int> listIncluye;
 
         for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
         {
             for (transicion *_transicion : (*i)->getListaTransiciones())
             {
-                // it = find(myvector.begin(), myvector.end(), 30);
-                cout << (*i)->transiciones << endl;
-
-                syncroWord = syncroWord + _transicion->simbolo;
+                if ((*i)->transiciones.size() > 1)
+                {
+                    syncroWord = syncroWord + "";
+                }
+                else
+                {
+                    syncroWord = syncroWord + _transicion->simbolo;
+                }
             }
         }
         cout << "Sync word" << endl;
