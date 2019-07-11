@@ -241,24 +241,22 @@ public:
         vector<estado *> estadosOn = bfs->getEstados();
         string syncroWord;
 
-        for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
-        {
-            for (transicion *_transicion : (*i)->getListaTransiciones())
-            {
 
-                if ((*i)->transiciones.size() > 1)
+            for (auto *_estado: estados)
+            {
+                cout << _estado->getNombre() << " " << _estado->incluye.size() << endl;
+                for (transicion *_transicion : (_estado->getListaTransiciones()))
                 {
-                    syncroWord = syncroWord + "";
-                }
-                else
-                {
-                    syncroWord = syncroWord + _transicion->simbolo;
+                    if (_estado->transiciones.size() == 2)
+                    {
+                        syncroWord = syncroWord + _transicion->simbolo;
+                    }
+
                 }
             }
-        }
-        cout << "Sync word" << endl;
-        cout << syncroWord << endl;
-        return syncroWord;
+            cout << "Sync word" << endl;
+            cout << syncroWord << endl;
+            return syncroWord;
     }
 
     void printAutomata()
