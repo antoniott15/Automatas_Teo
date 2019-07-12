@@ -61,17 +61,11 @@ int main()
   test.writeOn("input.txt",cantNodos);
   auto testPoly = test;
 
-
-
-
-  std::cout << std::endl
-            << std::endl
-            << "POWER TEST" << std::endl;
+  std::cout << "\n\n"<< "POWER TEST"<< "\n";
 
   automata *powerTest = test.getPowerAutomata();
 
-  std::cout << std::endl
-            << std::endl;
+  std::cout << "\n\n";
 
   for (estado *_estado : powerTest->getEstados())
   {
@@ -80,14 +74,12 @@ int main()
     {
       std::cout << _estado2->getNombre();
     }
-    std::cout << std::endl;
+    std::cout << "\n";
   }
 
-  std::cout << std::endl
-            << std::endl;
+  std::cout << "\n\n";
 
-
-  powerTest->printAutomata();
+    powerTest->printAutomata();
 
 
     std::cout << "Tiene palabra sincronizadora: "<< (powerTest->polinomial()?" Si":" No")<<endl;
