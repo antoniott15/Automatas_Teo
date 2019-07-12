@@ -311,12 +311,21 @@ public:
     }
     string reset()
     {
+        /*    {
+        vector<estado *> estadosOn = bfs->getEstados();
+        string syncroWord;
+
+        for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
+        {
+            for (transicion *_transicion : (*i)->getListaTransiciones())
+            {
+                if ((*i)->transiciones.size() > 1 && _transicion->inicio->incluye.size() != 2)
+                { */
         string wordReset="";
-        for(auto *_estado:estados){
-            for(auto _transicion:  _estado->transiciones){
-                if (_transicion.size() > 2)
-                {
-                }
+        vector <estado *> estadosIn = this->getEstados();
+        for(auto i = estadosIn.begin(); i!=estadosIn.end();i++){    
+            for(auto *_transicion: estadosIn->getListaTransiciones()){
+                
             }
         }
     }
