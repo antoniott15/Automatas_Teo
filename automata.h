@@ -233,7 +233,7 @@ public:
                 }
             }
         }
-        reset(bfsAutomata);
+
         return bfsAutomata;
     }
 
@@ -309,43 +309,15 @@ public:
         }
         return false;
     }
-    string reset(automata *bfs)
+    string reset()
     {
-        vector<estado *> estadosOn = bfs->getEstados();
-        string syncroWord;
+        string wordReset="";
+        for(auto *_estado:estados){
+            for(auto *_transicion: _estado->getListaTransiciones()){
 
-        for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
-        {
-            for (transicion *_transicion : (*i)->getListaTransiciones())
-            {
-                if ((*i)->transiciones.size() > 1 && _transicion->inicio->incluye.size() != 2)
-                {
-                    if (hasSingleA((*i)))
-                    {
-                        syncroWord = syncroWord + 'a';
-                    }
-                    if (hasSingleB((*i))){
-                        syncroWord = syncroWord + 'b';
-                    }
-      
-                }
-                else
-                {
-                    if (isSingleton(*i))
-                    {
-                        syncroWord = syncroWord + "";
-                    }
-                   else
-                    {
-                        syncroWord = syncroWord + _transicion->simbolo;
-                    }
-                }
-
+                _
             }
         }
-        cout << "Sync word" << endl;
-        cout << syncroWord << endl;
-        return syncroWord;
     }
 
 bool polinomial() {//================================================================================================================
