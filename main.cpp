@@ -1,8 +1,8 @@
 #include <iostream>
 #include "automata.h"
-#include <stdlib.h> /* srand, rand */
+#include <stdlib.h>
 #include <time.h>
-
+#include <stdexcept>
 int main()
 {
   int cantNodos,op;
@@ -14,19 +14,20 @@ int main()
   cout << "1) Si\n2) No\n"<<endl;
   cin >> op;
   if(op==1){
-    test.nuevoEstado(0);
     test.nuevoEstado(1);
     test.nuevoEstado(2);
     test.nuevoEstado(3);
+    test.nuevoEstado(4);
 
-    test.juntarEstados(0, 'a', 1);
-    test.juntarEstados(0, 'b', 1);
-    test.juntarEstados(1, 'a', 1);
+    test.juntarEstados(1, 'a', 2);
     test.juntarEstados(1, 'b', 2);
     test.juntarEstados(2, 'a', 2);
-    test.juntarEstados(3, 'a', 3);
     test.juntarEstados(2, 'b', 3);
-    test.juntarEstados(3, 'b', 0);
+    test.juntarEstados(3, 'a', 3);
+    test.juntarEstados(4, 'a', 4);
+    test.juntarEstados(3, 'b', 4);
+    test.juntarEstados(4, 'b', 1);
+    cantNodos = 4;
   }
   
   if(op==2){
@@ -55,8 +56,9 @@ int main()
     }
   }
 
-  test.printAutomata();
 
+  test.printAutomata();
+  test.writeOn("input.txt",cantNodos);
   auto testPoly = test;
 
 
@@ -85,20 +87,16 @@ int main()
             << std::endl;
 
 
-
   powerTest->printAutomata();
 
 
     std::cout << "Tiene palabra sincronizadora: "<< (powerTest->polinomial()?" Si":" No")<<endl;
-
-    auto bfs = powerTest->BFS();
-
-
-
-
-
-
-  
+    if (powerTest->polinomial()){
+      auto bfs = powerTest->BFS();
+      auto resetWord = powerTest->reset(bfs, powerTest->polinomial());
+    }else{
+      throw std::invalid_argument("No existe palabra de sincronizacion");
+    }
 
     /*  cout << bfs->reset(19)<<endl;
 

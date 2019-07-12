@@ -5,6 +5,7 @@
 #include <fstream>
 #include <algorithm>
 #include "estado.h"
+#include <stdexcept>
 #include <queue>
 #include <set>
 #include <list>
@@ -229,7 +230,6 @@ public:
                 }
             }
         }
-        reset(bfsAutomata);
         return bfsAutomata;
     }
     bool hasSingletons(estado *singleton){
@@ -242,9 +242,9 @@ public:
     }
 
 
-    string reset(automata *bfs)
+    string reset(automata *bfs, bool hasWord)
     {
-        if(polinomial()){
+        if(hasWord){
             vector<estado *> estadosOn = bfs->getEstados();
             string syncroWord;
 
@@ -274,7 +274,7 @@ public:
             return syncroWord;
         }
         else{
-            throw printf("No existe palabra sincronizadora\n");
+            throw std::invalid_argument("No existe palabra de sincronizacion");
         }
       
     }
