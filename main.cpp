@@ -5,22 +5,43 @@
 
 int main()
 {
-  int cantNodos;
+  int cantNodos,op;
   srand(time(NULL));
   automata test;
 
-  cout << "Ingrese la cantidad de nodos, con 0 se generaran la cantidad de nodos aleatoriamente: " <<endl;
-  cin >> cantNodos;
+  cout << "********SyncroWord********" <<endl;
+  cout << "Desea generar la prueba? " << endl;
+  cout << "1) Si\n2) No\n"<<endl;
+  cin >> op;
+  if(op==1){
+    test.nuevoEstado(0);
+    test.nuevoEstado(1);
+    test.nuevoEstado(2);
+    test.nuevoEstado(3);
 
-  if(cantNodos == 0){
-    cantNodos = rand() % 100+1;
-
+    test.juntarEstados(0, 'a', 1);
+    test.juntarEstados(0, 'b', 1);
+    test.juntarEstados(1, 'a', 1);
+    test.juntarEstados(1, 'b', 2);
+    test.juntarEstados(2, 'a', 2);
+    test.juntarEstados(3, 'a', 3);
+    test.juntarEstados(2, 'b', 3);
+    test.juntarEstados(3, 'b', 0);
   }
+  
+  if(op==2){
+    cout << "Ingrese la cantidad de nodos, con 0 se generaran la cantidad de nodos aleatoriamente: " << endl;
+    cin >> cantNodos;
 
-  for (int i = 1; i <= cantNodos; i++)
-  {
-    test.nuevoEstado(i);
-  }
+    if (cantNodos == 0)
+    {
+      cantNodos = rand() % 100 + 1;
+    }
+
+    for (int i = 1; i <= cantNodos; i++)
+    {
+      test.nuevoEstado(i);
+    }
 
     for (int i = 1; i <= cantNodos; i++)
     {
@@ -32,27 +53,12 @@ int main()
       int newNumber = rand() % cantNodos + 1;
       test.juntarEstados(i, 'b', newNumber);
     }
+  }
 
-
- /*  test.nuevoEstado(0);
-  test.nuevoEstado(1);
-  test.nuevoEstado(2);
-  test.nuevoEstado(3);
-
-  test.juntarEstados(0, 'a', 1);
-  test.juntarEstados(0, 'b', 1);
-  test.juntarEstados(1, 'a', 1);
-  test.juntarEstados(1, 'b', 2);
-  test.juntarEstados(2, 'a', 2);
-  test.juntarEstados(3, 'a', 3);
-  test.juntarEstados(2, 'b', 3);
-  test.juntarEstados(3, 'b', 0);
-*/
   test.printAutomata();
 
   auto testPoly = test;
 
-  testPoly.printAutomata();
 
 
 
@@ -83,17 +89,16 @@ int main()
   powerTest->printAutomata();
 
 
-
-
-    cout << "\n\n\n"
-       << "\tBFS TEST"
-       << "\n"
-       << endl;
-
     std::cout << "Tiene palabra sincronizadora: "<< (powerTest->polinomial()?" Si":" No")<<endl;
 
     auto bfs = powerTest->BFS();
-    bfs->printAutomata();
+
+
+
+
+
+
+  
 
     /*  cout << bfs->reset(19)<<endl;
 
