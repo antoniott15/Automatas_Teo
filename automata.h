@@ -169,18 +169,14 @@ public:
         }
         return nullptr;
     }
-    automata *BFS(int value)
+    automata *BFS()
     {
         estado *root;
         automata *powerAutomata = getPowerAutomata();
-        /*       for (auto i = powerAutomata->estados.begin(); i != powerAutomata->estados.end(); i++)
-        {
-
-            cout << "incluye" << endl;
-            cout << (*i)->incluye.size() << endl;
-            root = (*i);
+        for(auto *_estado:estados){
+            root = _estado;
         }
-*/
+
         auto bfsAutomata = new automata();
         int size = powerAutomata->estados.size();
 
@@ -191,7 +187,7 @@ public:
         }
 
         queue<estado *> container;
-        auto currNode = getValue(value);
+        auto currNode = root;
         container.push(currNode);
 
         while (!container.empty())
@@ -233,118 +229,73 @@ public:
                 }
             }
         }
-
+        reset(bfsAutomata);
         return bfsAutomata;
     }
-
-    bool isSingleton(estado* singleton)
-    {
-
-        set <estado *> Singletons;
-        set<estado *>::iterator it;
-        for(auto *_estado: estados){
-            if(_estado->incluye.size()==2){
-                Singletons.insert(_estado);
+    bool hasSingletons(estado *singleton){
+        for(auto *_estadoIn: estados){
+            if(_estadoIn->getNombre() == singleton->getNombre() && _estadoIn->incluye.size()==2){
+                return true;
             }
-        }
-        it = Singletons.find(singleton);
-        if (it != Singletons.end()){
-            cout << *it << endl;
-            return true;
         }
         return false;
     }
-    
-    bool hasSingleton(estado *estado)
+
+
+    string reset(automata *bfs)
     {
-        automata *powerAutomata = getPowerAutomata();
-        for (auto i = powerAutomata->estados.begin(); i != powerAutomata->estados.end();i++){
-            if(estado==(*i)){
-                if (estado->incluye.size() == 2)
+        if(polinomial()){
+            vector<estado *> estadosOn = bfs->getEstados();
+            string syncroWord;
+
+            for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
+            {
+                for (transicion *_transicion : (*i)->getListaTransiciones())
                 {
-                    return true;
-                }
-                else
-                {
-                    for (auto *_transicion : estado->transiciones)
+                    if ((*i)->transiciones.size() == 1)
                     {
-                        hasSingleton(_transicion->final);
+                        if (!hasSingletons(*i))
+                        {
+                            syncroWord = syncroWord + _transicion->simbolo;
+                        }
+                        else
+                        {
+                            syncroWord = syncroWord + "";
+                        }
+                    }
+                    else
+                    {
+                        syncroWord = syncroWord + "";
+                    }
+                }
+            }
+            cout << "Sync word" << endl;
+            cout << syncroWord << endl;
+            return syncroWord;
+        }
+        else{
+            throw printf("No existe palabra sincronizadora\n");
+        }
+      
+    }
+
+    bool polinomial()
+    { //================================================================================================================
+
+        for (auto *_estado : estados)
+        {
+            if (_estado->incluye.size() == 3)
+            {
+                for (auto _transicion : _estado->transiciones)
+                {
+                    if (_transicion->final->incluye.size() == 2)
+                    {
+                        return true;
                     }
                 }
             }
         }
         return false;
-    }
-
-    bool hasSingleA(estado* estado){
-        vector<transicion *> list = estado->transiciones;
-        for(auto *_transcion: list){
-            if(_transcion->simbolo == 'a'){
-                if(hasSingleton(_transcion->final)){
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-    bool hasSingleB(estado *estado)
-    {
-        vector<transicion *> list = estado->transiciones;
-        for (auto *_transcion : list)
-        {
-            if (_transcion->simbolo == 'b')
-            {
-                if (hasSingleton(_transcion->final))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-    string reset()
-    {
-        /*    {
-        vector<estado *> estadosOn = bfs->getEstados();
-        string syncroWord;
-
-        for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
-        {
-            for (transicion *_transicion : (*i)->getListaTransiciones())
-            {
-                if ((*i)->transiciones.size() > 1 && _transicion->inicio->incluye.size() != 2)
-                { */
-        string wordReset="";
-        vector <estado *> estadosIn = this->getEstados();
-        for(auto i = estadosIn.begin(); i!=estadosIn.end();i++){    
-            for(auto *_transicion: estadosIn->getListaTransiciones()){
-                
-            }
-        }
-    }
-
-bool polinomial() {//================================================================================================================
-
-    for(auto *_estado: estados){
-        if(_estado->incluye.size()==3){
-             for (auto _transicion : _estado->transiciones)
-            {
-                if(_transicion->final->incluye.size()==2){
-                    std::cout<<_transicion->inicio->getNombre()<<" > "<<_transicion->simbolo<<" > "<<_transicion->final->getNombre()<<std::endl;
-
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
 
 
 }//end polinomial

@@ -8,7 +8,7 @@ int main()
   int cantNodos;
   srand(time(NULL));
   automata test;
-/*
+
   cout << "Ingrese la cantidad de nodos, con 0 se generaran la cantidad de nodos aleatoriamente: " <<endl;
   cin >> cantNodos;
 
@@ -32,9 +32,9 @@ int main()
       int newNumber = rand() % cantNodos + 1;
       test.juntarEstados(i, 'b', newNumber);
     }
-*/
 
-  test.nuevoEstado(0);
+
+ /*  test.nuevoEstado(0);
   test.nuevoEstado(1);
   test.nuevoEstado(2);
   test.nuevoEstado(3);
@@ -47,7 +47,7 @@ int main()
   test.juntarEstados(3, 'a', 3);
   test.juntarEstados(2, 'b', 3);
   test.juntarEstados(3, 'b', 0);
-
+*/
   test.printAutomata();
 
   auto testPoly = test;
@@ -90,12 +90,12 @@ int main()
        << "\n"
        << endl;
 
- auto bfs = powerTest->BFS(19);
-  bfs->printAutomata();
+    std::cout << "Tiene palabra sincronizadora: "<< (powerTest->polinomial()?" Si":" No")<<endl;
 
-  bfs->reset();
+    auto bfs = powerTest->BFS();
+    bfs->printAutomata();
 
- /*  cout << bfs->reset(19)<<endl;
+    /*  cout << bfs->reset(19)<<endl;
 
 
   for (estado *_estado : powerTest->getEstados())
@@ -108,8 +108,5 @@ int main()
   }
 */
 
-
-    std::cout<<powerTest->polinomial()<<std::endl;
-
-  return 0;
+    return 0;
 }
