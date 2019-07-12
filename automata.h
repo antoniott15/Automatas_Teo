@@ -266,8 +266,8 @@ public:
                     else
                     {
                         syncroWord = syncroWord + "";
-                    }
                 }
+                    }
             }
             cout << "Sync word" << endl;
             cout << syncroWord << endl;
