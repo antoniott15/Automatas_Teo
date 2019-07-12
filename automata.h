@@ -313,9 +313,10 @@ public:
     {
         string wordReset="";
         for(auto *_estado:estados){
-            for(auto *_transicion: _estado->getListaTransiciones()){
-
-                _
+            for(auto _transicion:  _estado->transiciones){
+                if (_transicion.size() > 2)
+                {
+                }
             }
         }
     }
