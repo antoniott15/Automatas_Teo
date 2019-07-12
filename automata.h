@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "estado.h"
 #include <queue>
+#include <set>
 #include <list>
 #include <map>
 #include <string>
@@ -236,20 +237,109 @@ public:
         return bfsAutomata;
     }
 
+    bool isSingleton(estado* singleton)
+    {
+
+        set <estado *> Singletons;
+        set<estado *>::iterator it;
+        for(auto *_estado: estados){
+            if(_estado->incluye.size()==2){
+                Singletons.insert(_estado);
+            }
+        }
+        it = Singletons.find(singleton);
+        if (it != Singletons.end()){
+            cout << *it << endl;
+            return true;
+        }
+        return false;
+    }
+    
+    bool hasSingleton(estado *estado)
+    {
+        automata *powerAutomata = getPowerAutomata();
+        for (auto i = powerAutomata->estados.begin(); i != powerAutomata->estados.end();i++){
+            if(estado==(*i)){
+                if (estado->incluye.size() == 2)
+                {
+                    return true;
+                }
+                else
+                {
+                    for (auto *_transicion : estado->transiciones)
+                    {
+                        hasSingleton(_transicion->final);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    bool hasSingleA(estado* estado){
+        vector<transicion *> list = estado->transiciones;
+        for(auto *_transcion: list){
+            if(_transcion->simbolo == 'a'){
+                if(hasSingleton(_transcion->final)){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+    bool hasSingleB(estado *estado)
+    {
+        vector<transicion *> list = estado->transiciones;
+        for (auto *_transcion : list)
+        {
+            if (_transcion->simbolo == 'b')
+            {
+                if (hasSingleton(_transcion->final))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
     string reset(automata *bfs)
     {
         vector<estado *> estadosOn = bfs->getEstados();
-        vector<estado *>::iterator it;
         string syncroWord;
-        automata *powerAutomata = getPowerAutomata();
-        vector<int> listIncluye;
 
         for (auto i = estadosOn.begin(); i != estadosOn.end(); i++)
         {
             for (transicion *_transicion : (*i)->getListaTransiciones())
             {
-
-                    syncroWord = syncroWord + _transicion->simbolo;
+                if ((*i)->transiciones.size() > 1 && _transicion->inicio->incluye.size() != 2)
+                {
+                    if (hasSingleA((*i)))
+                    {
+                        syncroWord = syncroWord + 'a';
+                    }
+                    if (hasSingleB((*i))){
+                        syncroWord = syncroWord + 'b';
+                    }
+      
+                }
+                else
+                {
+                    if (isSingleton(*i))
+                    {
+                        syncroWord = syncroWord + "";
+                    }
+                   else
+                    {
+                        syncroWord = syncroWord + _transicion->simbolo;
+                    }
+                }
 
             }
         }
@@ -262,7 +352,8 @@ bool polinomial() {//===========================================================
 
     for(auto *_estado: estados){
         if(_estado->incluye.size()==3){
-            for(auto _transicion : _estado->transiciones){
+             for (auto _transicion : _estado->transiciones)
+            {
                 if(_transicion->final->incluye.size()==2){
                     std::cout<<_transicion->inicio->getNombre()<<" > "<<_transicion->simbolo<<" > "<<_transicion->final->getNombre()<<std::endl;
 

@@ -90,7 +90,7 @@ int main()
        << "\n"
        << endl;
 
-  auto bfs = powerTest->BFS(19);
+ auto bfs = powerTest->BFS(19);
   bfs->printAutomata();
 
  /*  cout << bfs->reset(19)<<endl;
