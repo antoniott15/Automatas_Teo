@@ -72,7 +72,7 @@ int main()
             << "POWER TEST"
             << "\n";
   gettimeofday(&start, 0);
-  automata *powerTest = test.getPowerAutomata(op);
+  automata *powerTest = test.getPowerAutomata(cantNodos);
 
   std::cout << "\n\n";
 
@@ -93,7 +93,7 @@ int main()
   std::cout << "Tiene palabra sincronizadora: " << (powerTest->polinomial() ? " Si" : " No") << endl;
   if (powerTest->polinomial())
   {
-    auto bfs = powerTest->BFS(op);
+    auto bfs = powerTest->BFS(cantNodos);
     bfs->printAutomata();
     auto resetWord = powerTest->reset(bfs, powerTest->polinomial());
   }

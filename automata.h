@@ -62,13 +62,16 @@ public:
     {
         auto powerAutomata = new automata();
         unsigned int powerSize;
-        if (op == 1)
+        if (1)
         {
-            powerSize = pow(estados.size(), 2);
-        }
-        if (op == 2)
-        {
-            powerSize = pow(2, estados.size());
+            if (op <= 5)
+            {
+                powerSize = pow(estados.size(), 2);
+            }
+            if (op > 5)
+            {
+                powerSize = pow(2, estados.size());
+            }
         }
         listaEstados incluye;
 
