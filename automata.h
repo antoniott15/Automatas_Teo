@@ -58,10 +58,18 @@ public:
         }
     };
 
-    automata *getPowerAutomata()
+    automata *getPowerAutomata(int op)
     {
         auto powerAutomata = new automata();
-        unsigned int powerSize = pow(estados.size(), 2);
+        unsigned int powerSize;
+        if (op == 1)
+        {
+            powerSize = pow(estados.size(), 2);
+        }
+        if (op == 2)
+        {
+            powerSize = pow(2, estados.size());
+        }
         listaEstados incluye;
 
         for (estado *_estado : estados)
@@ -170,14 +178,14 @@ public:
         }
         return nullptr;
     }
-    automata *BFS()
+    automata *BFS(int op)
     {
         estado *root;
-        automata *powerAutomata = getPowerAutomata();
-        for(auto *_estado:estados){
+        automata *powerAutomata = getPowerAutomata(op);
+        for (auto *_estado : estados)
+        {
             root = _estado;
         }
-
         auto bfsAutomata = new automata();
         int size = powerAutomata->estados.size();
 
@@ -207,7 +215,6 @@ public:
                 {
                     bfsAutomata->nuevoEstado(currNode->getNombre());
                 }
-
                 frequented[currNode->getNombre()] = true;
                 for (transicion *_transicion : currNode->transiciones)
                 {
@@ -232,19 +239,22 @@ public:
         }
         return bfsAutomata;
     }
-    bool hasSingletons(estado *singleton){
-        for(auto *_estadoIn: estados){
-            if(_estadoIn->getNombre() == singleton->getNombre() && _estadoIn->incluye.size()==2){
+    bool hasSingletons(estado *singleton)
+    {
+        for (auto *_estadoIn : estados)
+        {
+            if (_estadoIn->getNombre() == singleton->getNombre() && _estadoIn->incluye.size() == 2)
+            {
                 return true;
             }
         }
         return false;
     }
 
-
     string reset(automata *bfs, bool hasWord)
     {
-        if(hasWord){
+        if (hasWord)
+        {
             vector<estado *> estadosOn = bfs->getEstados();
             string syncroWord;
 
@@ -265,18 +275,18 @@ public:
                     }
                     else
                     {
-                        syncroWord = syncroWord + "";
-                }
+                        //syncroWord = syncroWord + "";
                     }
+                }
             }
             cout << "Sync word" << endl;
             cout << syncroWord << endl;
             return syncroWord;
         }
-        else{
+        else
+        {
             throw std::invalid_argument("No existe palabra de sincronizacion");
         }
-      
     }
 
     bool polinomial()
@@ -297,9 +307,7 @@ public:
         }
         return false;
 
-
-}//end polinomial
-
+    } //end polinomial
 
     void printAutomata()
     {
@@ -320,7 +328,7 @@ public:
     void writeOn(string nameOf, int numberOfElements)
     {
         ofstream File;
-        int width = 1200;
+        int width = 1000;
         int heigh = 1200;
         int i = 50;
         int j = 100;
